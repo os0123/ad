@@ -1,0 +1,416 @@
+TELEPHONE COMPANY
+import androidx.appcompat.app.AppCompatActivity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+
+    private EditText callEditText, smsEditText;
+    private Button calculateButton;
+
+    private double callRate = 0.5;
+    private double smsRate = 1;
+    private double gstRate = 0.08;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        callEditText = findViewById(R.id.callEditText);
+        smsEditText = findViewById(R.id.smsEditText);
+        calculateButton = findViewById(R.id.calculateButton);
+
+        calculateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String callString = callEditText.getText().toString().trim();
+                String smsString = smsEditText.getText().toString().trim();
+
+                if(callString.isEmpty() || smsString.isEmpty()){
+                    Toast.makeText(MainActivity.this, "Please enter valid inputs", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    int calls = Integer.parseInt(callString);
+                    int sms = Integer.parseInt(smsString);
+
+                    double callCost = calls * callRate;
+                    double smsCost = sms * smsRate;
+                    double subtotal = callCost + smsCost;
+                    double gst = subtotal * gstRate;
+                    double total = subtotal + gst;
+
+                    String message = "Call Charges: Rs " + callCost +
+                            "\nSMS Charges: Rs " + smsCost +
+                            "\nSubtotal: Rs " + subtotal +
+                            "\nGST (8%): Rs " + gst +
+                            "\nTotal Bill Amount: Rs " + total;
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setTitle("Bill Details");
+                    builder.setMessage(message);
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.show();
+                }
+            }
+        });
+    }
+}
+SQUARE OF NUMBER
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    private EditText numberEditText;
+    private Button squareButton;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        numberEditText = findViewById(R.id.numberEditText);
+        squareButton = findViewById(R.id.squareButton);
+
+        squareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String numberString = numberEditText.getText().toString().trim();
+                int number = Integer.parseInt(numberString);
+
+                Intent intent = new Intent(MainActivity.this, SquareActivity.class);
+                intent.putExtra("number", number);
+                startActivity(intent);
+            }
+        });
+    }
+}
+
+SECOND ACTIVITY
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class SquareActivity extends AppCompatActivity {
+
+    private TextView squareTextView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_square);
+
+        squareTextView = findViewById(R.id.squareTextView);
+
+        Intent intent = getIntent();
+        int number = intent.getIntExtra("number", 0);
+        int square = number * number;
+
+        squareTextView.setText("Square of " + number + " is " + square);
+    }
+}
+
+ELECTRICITY COMPANY
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    private EditText unitsEditText;
+    private Button calculateButton;
+    private TextView billTextView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        unitsEditText = findViewById(R.id.unitsEditText);
+        calculateButton = findViewById(R.id.calculateButton);
+        billTextView = findViewById(R.id.billTextView);
+
+        calculateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String unitsString = unitsEditText.getText().toString().trim();
+                int units = Integer.parseInt(unitsString);
+
+                double bill = calculateBill(units);
+
+                billTextView.setText("Your bill is Rs. " + bill);
+            }
+        });
+    }
+
+    private double calculateBill(int units) {
+        double bill = 0;
+
+        if (units <= 150) {
+            bill = units * 2.55;
+        } else if (units <= 400) {
+            bill = 150 * 2.55 + (units - 150) * 4.80;
+        } else {
+            bill = 150 * 2.55 + 250 * 4.80 + (units - 400) * 5;
+        }
+
+        double duty = bill * 0.09;
+        bill += duty;
+
+        return bill;
+    }
+}
+Write an android application that accepts a number using edittext and toasts 
+the Fibonacci numbers till the number on click of a button.
+
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity {
+
+    private EditText numberEditText;
+    private Button fibonacciButton;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        numberEditText = findViewById(R.id.numberEditText);
+        fibonacciButton = findViewById(R.id.fibonacciButton);
+
+        fibonacciButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String numberString = numberEditText.getText().toString().trim();
+                int number = Integer.parseInt(numberString);
+
+                List<Integer> fibonacciNumbers = getFibonacciNumbers(number);
+
+                StringBuilder messageBuilder = new StringBuilder();
+                for (int i : fibonacciNumbers) {
+                    messageBuilder.append(i).append(", ");
+                }
+
+                String message = messageBuilder.toString().substring(0, messageBuilder.length() - 2);
+
+                Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private List<Integer> getFibonacciNumbers(int number) {
+        List<Integer> fibonacciNumbers = new ArrayList<>();
+
+        int a = 0;
+        int b = 1;
+
+        while (b <= number) {
+            fibonacciNumbers.add(b);
+
+            int temp = a + b;
+            a = b;
+            b = temp;
+        }
+
+        return fibonacciNumbers;
+    }
+}
+
+
+Write an android application to activity which accepts a number from the user. 
+On click of a submit button it should take to second activity which accepts the 
+number entered and find the factorial.
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    private EditText numberEditText;
+    private Button submitButton;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        numberEditText = findViewById(R.id.numberEditText);
+        submitButton = findViewById(R.id.submitButton);
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String numberString = numberEditText.getText().toString().trim();
+                int number = Integer.parseInt(numberString);
+
+                Intent intent = new Intent(MainActivity.this, FactorialActivity.class);
+                intent.putExtra("number", number);
+                startActivity(intent);
+            }
+        });
+    }
+}
+FACTORIAL
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class FactorialActivity extends AppCompatActivity {
+
+    private TextView resultTextView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_factorial);
+
+        resultTextView = findViewById(R.id.resultTextView);
+
+        Intent intent = getIntent();
+        int number = intent.getIntExtra("number", 0);
+
+        int factorial = getFactorial(number);
+
+        String resultString = "The factorial of " + number + " is " + factorial;
+        resultTextView.setText(resultString);
+    }
+
+    private int getFactorial(int number) {
+        int factorial = 1;
+        for (int i = 1; i <= number; i++) {
+            factorial *= i;
+        }
+        return factorial;
+    }
+}
+Create an android app where the first activity accepts two numbers and if the 
+numbers are positive would be forwarded to second activity. The second 
+activity toasts the GCD of the two numbers. 
+
+MAIN1
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    private EditText firstNumberEditText;
+    private EditText secondNumberEditText;
+    private Button submitButton;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        firstNumberEditText = findViewById(R.id.firstNumberEditText);
+        secondNumberEditText = findViewById(R.id.secondNumberEditText);
+        submitButton = findViewById(R.id.submitButton);
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String firstNumberString = firstNumberEditText.getText().toString().trim();
+                String secondNumberString = secondNumberEditText.getText().toString().trim();
+
+                int firstNumber = Integer.parseInt(firstNumberString);
+                int secondNumber = Integer.parseInt(secondNumberString);
+
+                if (firstNumber > 0 && secondNumber > 0) {
+                    Intent intent = new Intent(MainActivity.this, GCDActivity.class);
+                    intent.putExtra("firstNumber", firstNumber);
+                    intent.putExtra("secondNumber", secondNumber);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(MainActivity.this, "Please enter positive numbers", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+}
+SECON
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class GCDActivity extends AppCompatActivity {
+
+    private TextView resultTextView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_gcd);
+
+        resultTextView = findViewById(R.id.resultTextView);
+
+        Intent intent = getIntent();
+        int firstNumber = intent.getIntExtra("firstNumber", 0);
+        int secondNumber = intent.getIntExtra("secondNumber", 0);
+
+        int gcd = getGCD(firstNumber, secondNumber);
+
+        String resultString = "The GCD of " + firstNumber + " and " + secondNumber + " is " + gcd;
+        resultTextView.setText(resultString);
+    }
+
+    private int getGCD(int a, int b) {
+        if (b == 0) {
+            return a;
+        } else {
+            return getGCD(b, a % b);
+        }
+    }
+}
+
+
+
+
